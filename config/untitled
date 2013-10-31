@@ -1,0 +1,25 @@
+$file='controllers/'.$url.'.php';
+		
+		if (file_exists($file)) {
+			require $file;
+			$controller = new $url;
+			$controller->useModel($url);
+		}else{
+			require 'controllers/index.php';
+			$controller = new Index();
+			$controller->useModel('index');
+		}
+
+		if (method_exists($controller,$this->x[1])){
+			if(isset($this->x[2])){
+				$controller->{$this->x[1]}($this->x[2]);
+			}elseif(isset($this->x[1])){
+				$controller->{$this->x[1]}();
+			}
+		}else{
+			if(method_exists($controller,'index')){
+				$controller->index();
+			}else{
+				$this->notfound($url);
+			}
+		}
