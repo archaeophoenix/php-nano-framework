@@ -72,7 +72,7 @@ class Html{
 	    echo "<meta name='$name' content='$content'>";
 	}
 	function direct($url){
-	    echo "<script type='text/javascript>window.location='$url';</script>";
+	    echo "<script type='text/javascript'>window.location='$url';</script>";
 	}
 	function get($index){
 		return $this->alltag[$index];
