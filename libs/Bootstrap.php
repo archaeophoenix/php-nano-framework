@@ -24,30 +24,23 @@ class Bootstrap {
 		}
 	}
 	private function methodcontroller(){
-		$url=count($this->x);
-		if ($url > 1) {
-			if(!method_exists($this->controller,$this->x[1])){
-				$url=1;
-			}
+
+		$func = $this->x[1];
+		array_shift($this->x);
+		array_shift($this->x);
+
+		if (!empty($this->x)) {
+			call_user_func_array(array($this->controller,$func),$this->x);
+		} elseif(method_exists($this->controller,$func)){
+			$this->controller->{$func}();
 		}
-		switch ($url) {
-			case 6: $this->controller->{$this->x[1]}($this->x[2],$this->x[3],$this->x[4],$this->x[5]);
-			break;			
-			case 5: $this->controller->{$this->x[1]}($this->x[2],$this->x[3],$this->x[4]);
-			break;
-			case 4: $this->controller->{$this->x[1]}($this->x[2],$this->x[3]);
-			break;
-			case 3: $this->controller->{$this->x[1]}($this->x[2]);
-			break;
-			case 2: $this->controller->{$this->x[1]}();
-			break;
-			default: 
-				if(method_exists($this->controller,'index')){
-					$this->controller->index();
-				}else{
-					$this->notfound($url);
-				}
-			break;
+
+		if(!method_exists($this->controller,$func)){
+			if(method_exists($this->controller,'index')){
+				$this->controller->index();
+			}else{
+				$this->notfound($func);
+			}
 		}
 	}
 

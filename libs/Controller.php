@@ -6,7 +6,7 @@ class Controller{
 		$this->post = new Post();
 	}
 	function direct($url){
-	    echo "<script type='text/javascript'>window.location='$url';</script>";
+	    echo '<meta http-equiv="refresh"  content="0; url='.$url.'" />';
 	}
 	function useModel($file){
 		$load= "models/".$file."_model.php";
