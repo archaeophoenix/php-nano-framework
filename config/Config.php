@@ -7,6 +7,9 @@ $base_url = $http . $_SERVER['HTTP_HOST'] . "" . $fo;
 define('X',$base_url);
 define('LIBS','libs/');
 
+define('header','header');
+define('footer','footer');
+
 
 define('DB_TYPE', 'mysql');
 define('DB_HOST', '127.0.0.1');

@@ -4,7 +4,7 @@
 		<td>Role</td>
 		<td colspan="2" align="center">Action</td>
 	</tr>
-<?php foreach ($this->data as $data) {?>
+<?php foreach ($datas as $data) {?>
 	<tr>
 		<td><?php echo $data['username']; ?></td>
 		<td><?php echo $data['role']; ?></td>

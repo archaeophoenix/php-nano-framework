@@ -31,6 +31,7 @@ class Post{
 		}
 		return $this;
 	}
+	
 	function exception(){
 		if (!empty($this->error)){
 			return true;

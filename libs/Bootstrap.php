@@ -1,18 +1,18 @@
 <?php
 class Bootstrap {
 	
-	private $x=null;
-	private $controller=null;
+	private $x = null;
+	private $controller = null;
 	
 	private function geturl(){
-		$x=isset($_GET['x'])?$_GET['x']:NULL;
-		$x=rtrim($x,'/');
-		$x=filter_var($x,FILTER_SANITIZE_URL);
-		$this->x=explode('/', $x);
+		$x = isset($_GET['x'])?$_GET['x']:NULL;
+		$x = rtrim($x,'/');
+		$x = filter_var($x,FILTER_SANITIZE_URL);
+		$this->x = explode('/', $x);
 	}
 
 	private function load($url){
-		$file='controllers/'.$url.'.php';
+		$file = 'controllers/'.$url.'.php';
 		if (file_exists($file)) {
 			require $file;
 			$this->controller = new $url;
@@ -23,8 +23,10 @@ class Bootstrap {
 			$this->controller->useModel('index');
 		}
 	}
+	
 	private function methodcontroller(){
-
+		error_reporting(~E_NOTICE);
+		
 		$func = $this->x[1];
 		array_shift($this->x);
 		array_shift($this->x);

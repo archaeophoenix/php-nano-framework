@@ -4,52 +4,50 @@ class Index extends Controller{
 	function __construct(){
 		parent::__construct();
 		Session::start();
-		if(Session::get('log')==false) {
+		if(Session::get('log') == false) {
 			Session::destroy();
-			?><script type="text/javascript">window.location="<?php echo X.'login'?>"</script><?php
+			$this->direct(X.'login');
 		}
 	}
 	function index(){
-		$this->view->hai=$this->model->test();
-		$today=date("Y-m-d", time());
-		$this->view->date=$this->view->tanggal($today,true);
-		$this->view->ok="asdas asdas asdrw podfntr gsdifs sodfnsfs ifsf";
-		$this->view->render('index/index');
+		$data['hai'] = $this->model->test();
+		$today = date("Y-m-d", time());
+		$data['date'] = $this->view->tanggal($today,true);
+		$data['ok'] = "asdas asdas asdrw podfntr gsdifs sodfnsfs ifsf";
+		$this->view->render('index/index',$data);
 	}
 	function read(){
-		if (Session::get('role')!='owner') {
-			?><script type="text/javascript">window.location="<?php echo X?>"</script><?php
+		if (Session::get('role') != 'owner') {
+			$this->direct(X);
 		}else{
-			$this->view->data=$this->model->read();
-			$this->view->render('index/read');
+			$data['datas'] = $this->model->read();
+			$this->view->render('index/read',$data);
 		}
 	}
-	function coba($id=''){
-		if (Session::get('role')!='owner'){
-			?><script type="text/javascript">window.location="<?php echo X?>"</script><?php
+	function coba($id = ''){
+		if (Session::get('role') != 'owner'){
+			$this->direct(X);
 		}else{
-			if (isset($id)) {
-				$this->view->data=$this->model->detail($id);
-			}
-			$this->view->render('index/cu');
+			$data['data'] = (empty($id)) ? null : $this->model->detail($id);
+			$this->view->render('index/cu',$data);
 		}
 	}
 	function delete($id){
-		if (Session::get('role')!='owner') {
-			?><script type="text/javascript">window.location="<?php echo X?>"</script><?php
+		if (Session::get('role') != 'owner') {
+			$this->direct(X);
 		}else{
 			$this->model->delete($id);
 		}
 	}
 	function cu($id=''){
-		if (Session::get('role')!='owner') {
-			?><script type="text/javascript">window.location="<?php echo X?>"</script><?php
+		if (Session::get('role') != 'owner') {
+			$this->direct(X);
 		}else{
 			$this->model->cu($id);
 		}
 	}
 	function logout(){
 		Session::destroy();
-		?><script type="text/javascript">window.location="<?php echo X.'login'?>"</script><?php
+		$this->direct(X.'login');
 	}
 }

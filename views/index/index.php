@@ -1,8 +1,8 @@
 <article>
 <br>yeah<br>
-<?php foreach($this->hai as $hay){echo$hay['id'];}?>
+<?php foreach($hai as $hay){echo$hay['id'];}?>
 <br>
-<?php echo $this->subtext($this->ok);?>
+<?php echo $this->subtext($ok);?>
 <br>
-<?php echo $this->date;?>
+<?php echo $date;?>
 </article>

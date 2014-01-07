@@ -8,14 +8,20 @@ class Database extends PDO{
     }
 
     function field($table){
-        $exe = $this->prepare("DESCRIBE ".$table);
+        $sql = "DESCRIBE ".$table;
+        $exe = $this->prepare($sql);
         $exe->execute();
-        $result = $exe->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
+        if(!$exe){
+            $message = $this->errorInfo();
+            echo $message[2]."<br>please check this query &rArr; ".$sql;
+            die();
+        } else {
+            $result = $exe->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
     }
 
     function create($table, $data = array()){
-        $this->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
         if(empty($data)){
             $Field = $this->field($table);
             foreach($Field as $Fields){
@@ -43,7 +49,6 @@ class Database extends PDO{
     }
 
     function read($table, $condition = null, $fields = "*"){
-        $this->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
         $sql = "SELECT $fields FROM $table $condition";
         $exe = $this->prepare($sql);
         if(!$exe){
@@ -63,10 +68,9 @@ class Database extends PDO{
             foreach($Field as $Fields){
                 if($Fields['Type']!='timestamp'){
                     $value[]=$Fields['Field']." = :".$Fields['Field'];
-                    $this->post->set($Fields['Field']);
+                    $data[$Fields['Field']] = $_REQUEST[$Fields['Field']];
                 }
             }
-            $data = $this->post->get();
         } else {
             foreach($data as $key => $val ){
                 $value[] = $key." = :".$key;
@@ -74,7 +78,7 @@ class Database extends PDO{
             }
         }
         $values = implode(", ",$value);
-        // echo "UPDATE $table SET ".implode(", ",$datas)." WHERE $where <br/>";
+        // echo "UPDATE $table SET ".implode(" ,",$datas)." WHERE $where <br/>"
         $exe = $this->prepare("UPDATE $table SET $values WHERE $where");
         if(!$exe){
             $message = $this->errorInfo();
@@ -94,7 +98,7 @@ class Database extends PDO{
         $this->exec("DELETE FROM $table WHERE $where");
     }
 
-    function upload($data, $url = null, $rename = null){
+    function upload($data, $url, $rename = NULL){
         $files = $_FILES[$data];
         $name = $files['name'];
         move_uploaded_file($files['tmp_name'], "$url/".$name);
@@ -110,7 +114,6 @@ class Database extends PDO{
     }
 
     function one($table, $condition = null, $fields = "*"){
-        $this->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
         $sql = "SELECT $fields FROM $table $condition";
         $exe = $this->prepare($sql);
         if(!$exe){
